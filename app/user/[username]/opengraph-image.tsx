@@ -78,259 +78,184 @@ export default async function Image({ params }: { params: Promise<{ username: st
     { label: "RANK", value: rankName.toUpperCase() },
   ]
 
-  return new ImageResponse(
-    (
+  const profileUrl = `redliner.online/user/${displayName}`
+
+return new ImageResponse(
+  (
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+        backgroundColor: "#050505",
+        position: "relative",
+        fontFamily: "monospace",
+        overflow: "hidden",
+      }}
+    >
+      {/* Grid */}
       <div
         style={{
-          width: "100%",
-          height: "100%",
+          position: "absolute",
+          inset: 0,
           display: "flex",
-          flexDirection: "column",
-          backgroundColor: BG,
-          fontFamily: "monospace",
-          position: "relative",
+          backgroundImage: `
+            linear-gradient(rgba(255,0,0,0.18) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,0,0,0.18) 1px, transparent 1px)
+          `,
+          backgroundSize: "48px 48px",
+        }}
+      />
+
+      {/* Red glow */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          display: "flex",
+          background:
+            "radial-gradient(circle at center, rgba(255,0,0,0.18) 0%, rgba(255,0,0,0.06) 30%, transparent 70%)",
+        }}
+      />
+
+      {/* Border */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 20,
+          border: "2px solid #ff1f1f",
+          display: "flex",
+          boxShadow: "0 0 30px rgba(255,0,0,0.4)",
+        }}
+      />
+
+      {/* Avatar */}
+      <div
+        style={{
+          width: 220,
+          height: 220,
+          borderRadius: "999px",
+          overflow: "hidden",
+          border: "5px solid #ff1f1f",
+          boxShadow: "0 0 40px rgba(255,0,0,0.7)",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "#111",
         }}
       >
-        {/* Red grid background */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            display: "flex",
-            backgroundImage: `linear-gradient(${GRID} 1px, transparent 1px), linear-gradient(90deg, ${GRID} 1px, transparent 1px)`,
-            backgroundSize: "40px 40px",
-          }}
-        />
-
-        {/* Scanline overlay */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            display: "flex",
-            backgroundImage: `repeating-linear-gradient(to bottom, transparent 0px, transparent 2px, ${SCANLINE} 3px, ${SCANLINE} 4px)`,
-          }}
-        />
-
-        {/* Inner red glow border frame */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 14,
-            display: "flex",
-            border: `2px solid ${RED}`,
-            boxShadow: `0 0 40px rgba(255,59,31,0.45), inset 0 0 40px rgba(255,59,31,0.12)`,
-          }}
-        />
-
-        {/* Banner band (full width) */}
-        <div
-          style={{
-            display: "flex",
-            height: 210,
-            width: "100%",
-            backgroundColor: "#120c0b",
-            borderBottom: `2px solid ${RED}`,
-            overflow: "hidden",
-            position: "relative",
-          }}
-        >
-          {banner ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={banner}
-              alt=""
-              width={1200}
-              height={210}
-              style={{ width: 1200, height: 210, objectFit: "cover", opacity: 0.85 }}
-            />
-          ) : null}
-
-          {/* Top-left tag */}
+        {avatar ? (
+          <img
+            src={avatar}
+            alt=""
+            width={220}
+            height={220}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+            }}
+          />
+        ) : (
           <div
             style={{
-              position: "absolute",
-              top: 30,
-              left: 44,
+              color: "#fff",
+              fontSize: 96,
+              fontWeight: 700,
               display: "flex",
-              alignItems: "center",
             }}
           >
-            <div
-              style={{
-                display: "flex",
-                color: BG,
-                backgroundColor: RED,
-                fontSize: 22,
-                fontWeight: 700,
-                letterSpacing: 4,
-                padding: "4px 12px",
-              }}
-            >
-              MERC.OS
-            </div>
-            <div
-              style={{
-                display: "flex",
-                color: RED,
-                fontSize: 22,
-                letterSpacing: 6,
-                marginLeft: 14,
-                textShadow: `0 0 12px ${RED}`,
-              }}
-            >
-              OPERATOR DOSSIER
-            </div>
+            {displayName[0]?.toUpperCase()}
           </div>
-
-          {/* Top-right status block */}
-          <div
-            style={{
-              position: "absolute",
-              top: 26,
-              right: 44,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-end",
-            }}
-          >
-            <div style={{ display: "flex", color: FG, fontSize: 18, letterSpacing: 3 }}>
-              DOSSIER_ID: {dossierId}
-            </div>
-            <div style={{ display: "flex", color: RED, fontSize: 18, letterSpacing: 3, marginTop: 6 }}>
-              CLEARANCE: VERIFIED
-            </div>
-            <div style={{ display: "flex", color: RED, fontSize: 18, letterSpacing: 3, marginTop: 6 }}>
-              STATUS: ONLINE
-            </div>
-          </div>
-        </div>
-
-        {/* Identity row — avatar overlaps banner/body */}
-        <div style={{ display: "flex", alignItems: "flex-end", padding: "0 48px", marginTop: -78 }}>
-          <div
-            style={{
-              display: "flex",
-              width: 168,
-              height: 168,
-              border: `3px solid ${RED}`,
-              backgroundColor: "#1a1110",
-              alignItems: "center",
-              justifyContent: "center",
-              overflow: "hidden",
-              boxShadow: `0 0 30px rgba(255,59,31,0.5)`,
-            }}
-          >
-            {avatar ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={avatar} alt="" width={168} height={168} style={{ width: 168, height: 168, objectFit: "cover" }} />
-            ) : (
-              <div style={{ display: "flex", color: RED, fontSize: 84, fontWeight: 700 }}>
-                {displayName.slice(0, 1).toUpperCase()}
-              </div>
-            )}
-          </div>
-
-          <div style={{ display: "flex", flexDirection: "column", marginLeft: 28, paddingBottom: 6 }}>
-            <div style={{ display: "flex", color: FG, fontSize: 58, fontWeight: 700, textShadow: "0 0 18px rgba(255,255,255,0.25)" }}>
-              {displayName}
-            </div>
-            <div style={{ display: "flex", marginTop: 10, gap: 26 }}>
-              <div style={{ display: "flex", color: RED, fontSize: 20, letterSpacing: 2 }}>
-                RANK: {rankName.toUpperCase()}
-              </div>
-              <div style={{ display: "flex", color: MUTED, fontSize: 20, letterSpacing: 2 }}>
-                FOLLOWERS: {followers}
-              </div>
-              <div style={{ display: "flex", color: MUTED, fontSize: 20, letterSpacing: 2 }}>
-                ACHIEVEMENTS: {achievements}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Bio terminal panel */}
-        <div
-          style={{
-            display: "flex",
-            margin: "26px 48px 0",
-            padding: "16px 20px",
-            border: `1px solid ${RED_DIM}`,
-            backgroundColor: PANEL,
-            color: FG,
-            fontSize: 23,
-            lineHeight: 1.4,
-            maxHeight: 96,
-            overflow: "hidden",
-          }}
-        >
-          <span style={{ display: "flex", color: RED, marginRight: 10 }}>{">"}</span>
-          <span style={{ display: "flex" }}>
-            {bio ? (bio.length > 130 ? `${bio.slice(0, 130)}…` : bio) : "No bio on record."}
-          </span>
-        </div>
-
-        {/* Tactical stat boxes */}
-        <div
-          style={{
-            display: "flex",
-            position: "absolute",
-            bottom: 78,
-            left: 48,
-            right: 48,
-            justifyContent: "space-between",
-          }}
-        >
-          {statBoxes.map((box) => (
-            <div
-              key={box.label}
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                width: 252,
-                padding: "14px 18px",
-                border: `1px solid ${RED}`,
-                backgroundColor: PANEL,
-                boxShadow: "inset 0 0 18px rgba(255,59,31,0.1)",
-              }}
-            >
-              <span style={{ display: "flex", color: RED, fontSize: 17, letterSpacing: 3, textShadow: `0 0 10px ${RED}` }}>
-                {box.label}
-              </span>
-              <span
-                style={{
-                  display: "flex",
-                  color: FG,
-                  fontSize: box.label === "RANK" ? 30 : 44,
-                  fontWeight: 700,
-                  marginTop: 6,
-                }}
-              >
-                {box.value}
-              </span>
-            </div>
-          ))}
-        </div>
-
-        {/* Footer strip */}
-        <div
-          style={{
-            position: "absolute",
-            bottom: 22,
-            left: 48,
-            right: 48,
-            display: "flex",
-            justifyContent: "center",
-            color: RED,
-            fontSize: 18,
-            letterSpacing: 6,
-            textShadow: `0 0 10px ${RED}`,
-          }}
-        >
-          REDLINER // MERC.OS // COMMUNITY NETWORK
-        </div>
+        )}
       </div>
-    ),
-    { ...size },
-  )
-}
+
+      {/* Username */}
+      <div
+        style={{
+          display: "flex",
+          marginTop: 34,
+          color: "#ffffff",
+          fontSize: 72,
+          fontWeight: 700,
+          textShadow: "0 0 18px rgba(255,255,255,0.25)",
+        }}
+      >
+        {displayName}
+      </div>
+
+      {/* Profile URL */}
+      <div
+        style={{
+          display: "flex",
+          marginTop: 12,
+          color: "#8d8d8d",
+          fontSize: 30,
+        }}
+      >
+        https://{profileUrl}
+      </div>
+
+      {/* Small MERC.OS tags */}
+      <div
+        style={{
+          position: "absolute",
+          top: 28,
+          left: 32,
+          display: "flex",
+          color: "#ff1f1f",
+          fontSize: 24,
+          letterSpacing: 4,
+        }}
+      >
+        MERC.OS
+      </div>
+
+      <div
+        style={{
+          position: "absolute",
+          top: 28,
+          right: 32,
+          display: "flex",
+          color: "#ff1f1f",
+          fontSize: 24,
+          letterSpacing: 4,
+        }}
+      >
+        ONLINE
+      </div>
+
+      <div
+        style={{
+          position: "absolute",
+          bottom: 28,
+          left: 32,
+          display: "flex",
+          color: "#ff1f1f",
+          fontSize: 22,
+          letterSpacing: 4,
+        }}
+      >
+        VERIFIED
+      </div>
+
+      <div
+        style={{
+          position: "absolute",
+          bottom: 28,
+          right: 32,
+          display: "flex",
+          color: "#ff1f1f",
+          fontSize: 22,
+          letterSpacing: 4,
+        }}
+      >
+        DOSSIER SYSTEM
+      </div>
+    </div>
+  ),
+  { ...size }
+)
