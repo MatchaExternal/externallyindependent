@@ -127,7 +127,7 @@ export const weapons: Weapon[] = [
     price: null,
     rarity: "ELITE",
     image: "/weapons/castigate.png",
-    tags: ["One-handed", "Lifesteal", "Scan-aim"],
+    tags: ["One-handed", "Scan-aim"],
     specs: [
       { label: "DAMAGE", value: "60" },
       { label: "BULLET COST", value: "100H" },
