@@ -1,0 +1,283 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-heading: var(--font-display), 'Geist Fallback';
+  --font-sans: var(--font-geist-mono), 'Geist Mono Fallback';
+  --font-mono: var(--font-geist-mono), 'Geist Mono Fallback';
+  --font-display: var(--font-display), 'Geist Fallback';
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-amber: var(--amber);
+  --color-warn: var(--warn);
+  --color-alert: var(--alert);
+  --color-sage: var(--sage);
+
+  --radius-sm: 2px;
+  --radius-md: 2px;
+  --radius-lg: 3px;
+  --radius-xl: 4px;
+}
+
+:root {
+  color-scheme: dark;
+  /* REDLINER MERC.OS palette: pure black, white, grays + amber/red alerts */
+  --background: oklch(0.06 0 0);
+  --foreground: oklch(0.96 0 0);
+  --card: oklch(0.1 0 0);
+  --card-foreground: oklch(0.96 0 0);
+  --popover: oklch(0.08 0 0);
+  --popover-foreground: oklch(0.96 0 0);
+  --primary: oklch(0.96 0 0);
+  --primary-foreground: oklch(0.08 0 0);
+  --secondary: oklch(0.18 0 0);
+  --secondary-foreground: oklch(0.96 0 0);
+  --muted: oklch(0.16 0 0);
+  --muted-foreground: oklch(0.62 0 0);
+  --accent: oklch(0.22 0 0);
+  --accent-foreground: oklch(0.96 0 0);
+  --destructive: oklch(0.58 0.22 27);
+  --border: oklch(1 0 0 / 14%);
+  --input: oklch(1 0 0 / 16%);
+  --ring: oklch(0.7 0 0);
+
+  --amber: oklch(0.58 0.2 27);
+  --warn: oklch(0.55 0.2 27);
+  --alert: oklch(0.58 0.21 27);
+  --sage: oklch(0.72 0.07 155);
+
+  --radius: 2px;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    @apply font-mono bg-background;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: 'ss01', 'cv01';
+  }
+  ::selection {
+    background: var(--amber);
+    color: #000;
+  }
+  /* thin scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: oklch(0.1 0 0);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: oklch(0.3 0 0);
+    border-radius: 0;
+  }
+}
+
+/* ============ CRT + TERMINAL EFFECTS ============ */
+
+/* Scanlines overlay */
+.crt-scanlines::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.04) 0px,
+    rgba(255, 255, 255, 0.04) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode: overlay;
+}
+
+/* Vignette + subtle screen curvature glow */
+.crt-vignette::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 59;
+  pointer-events: none;
+  background: radial-gradient(
+    120% 120% at 50% 50%,
+    transparent 55%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
+}
+
+/* Flicker animation */
+@keyframes crt-flicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  92% {
+    opacity: 1;
+  }
+  93% {
+    opacity: 0.82;
+  }
+  94% {
+    opacity: 1;
+  }
+  96% {
+    opacity: 0.94;
+  }
+  97% {
+    opacity: 1;
+  }
+}
+.crt-flicker {
+  animation: crt-flicker 6s infinite steps(1);
+}
+
+@keyframes text-flicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  3% {
+    opacity: 0.4;
+  }
+  6% {
+    opacity: 1;
+  }
+}
+.text-flicker {
+  animation: text-flicker 4s infinite;
+}
+
+/* Blinking cursor */
+@keyframes blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+.cursor-blink {
+  animation: blink 1s steps(1) infinite;
+}
+
+/* Marquee for ticker */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee {
+  animation: marquee 40s linear infinite;
+}
+
+/* Scan sweep */
+@keyframes scan-sweep {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+.scan-sweep {
+  animation: scan-sweep 3s linear infinite;
+}
+
+/* Glitch */
+@keyframes glitch-x {
+  0%,
+  100% {
+    clip-path: inset(0 0 0 0);
+    transform: translate(0);
+  }
+  20% {
+    clip-path: inset(20% 0 60% 0);
+    transform: translate(-2px, 0);
+  }
+  40% {
+    clip-path: inset(60% 0 10% 0);
+    transform: translate(2px, 0);
+  }
+  60% {
+    clip-path: inset(10% 0 70% 0);
+    transform: translate(-1px, 0);
+  }
+}
+
+.bg-grid {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.text-amber {
+  color: var(--amber);
+}
+.text-alert {
+  color: var(--alert);
+}
+.text-sage {
+  color: var(--sage);
+}
+.border-sage {
+  border-color: var(--sage);
+}
+.bg-sage {
+  background-color: var(--sage);
+}
+
+.dossier-corner {
+  position: relative;
+}
+.dossier-corner::before,
+.dossier-corner::after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-color: var(--amber);
+}
+.dossier-corner::before {
+  top: -1px;
+  left: -1px;
+  border-top: 2px solid;
+  border-left: 2px solid;
+}
+.dossier-corner::after {
+  bottom: -1px;
+  right: -1px;
+  border-bottom: 2px solid;
+  border-right: 2px solid;
+}
